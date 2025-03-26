@@ -2,7 +2,7 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 
 local Window = Rayfield:CreateWindow({
-    Name = "Wallhop Script",
+    Name = "Sprout - Testing Script",
     Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
     LoadingTitle = "Loading...",
     LoadingSubtitle = "by isssacque1234",
@@ -32,12 +32,65 @@ local Window = Rayfield:CreateWindow({
 
 
 
- local aimbotTab = Window:CreateTab("aimbot", "crosshair")
+ local mainTab = Window:CreateTab("Settings", "crosshair")
 
- local Section = aimbotTab:CreateSection("Aimbot Settings")
+ local Section = mainTab:CreateSection("configure!?")
 
 
+local Toggle = mainTab:CreateToggle({
+    Name = Heal all (use normal Sprout)",
+    CurrentValue = false,
+    Flag = "Toggle1",
+    Callback = function(Value)
+        getgenv().autoHealEnabled = Value
 
+        if Value then
+            task.spawn(function()
+                while getgenv().autoHealEnabled do
+                    for _, player in ipairs(game.Players:GetPlayers()) do
+                        if player.Character then
+                            local args = {
+                                [1] = player.Character:WaitForChild("HumanoidRootPart")
+                            }
+                            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("HealAbility"):FireServer(unpack(args))
+                        end
+                    end
+                    task.wait(0.15)
+                end
+            end)
+        else
+            getgenv().autoHealEnabled = false
+        end
+    end
+})
+
+
+local Toggle = mainTab:CreateToggle({
+    Name = "crash the player (use normal Sprout and a warning may lag your phone, PC or console)",
+    CurrentValue = false,
+    Flag = "Toggle1",
+    Callback = function(Value)
+        getgenv().autoHealEnabled = Value
+
+        if Value then
+            task.spawn(function()
+                while getgenv().autoHealEnabled do
+                    for _, player in ipairs(game.Players:GetPlayers()) do
+                        if player.Character then
+                            local args = {
+                                [1] = player.Character:WaitForChild("HumanoidRootPart")
+                            }
+                            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("HealAbility"):FireServer(unpack(args))
+                        end
+                    end
+                    task.wait(0.01)
+                end
+            end)
+        else
+            getgenv().autoHealEnabled = false
+        end
+    end
+})
 
 
  Rayfield:Notify({
